@@ -1,38 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Loan Calculator - Govind Singh Makrana</title>
     <style>
-        :root {
-            --primary-blue: #0066ff;
-            --bg-light: #f8f9fa;
-        }
-
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background-color: var(--bg-light);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
         }
 
-        .calc-card {
-            background: #ffffff;
+        .container {
+            background: white;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 450px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 400px;
             text-align: center;
         }
 
-        h2 { color: #333; margin-bottom: 25px; }
+        h2 { color: #1a73e8; margin-bottom: 20px; }
 
         .btn-group {
             display: flex;
@@ -40,39 +34,37 @@
             margin-bottom: 25px;
         }
 
-        .mode-btn {
+        .option-btn {
             flex: 1;
-            padding: 12px 5px;
-            border: 2px solid var(--primary-blue);
+            padding: 12px;
+            border: 2px solid #1a73e8;
             background: white;
-            color: var(--primary-blue);
+            color: #1a73e8;
             border-radius: 8px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: bold;
             transition: 0.3s;
         }
 
-        .mode-btn.active {
-            background: var(--primary-blue);
+        .option-btn.active {
+            background: #1a73e8;
             color: white;
         }
 
-        #input-section {
+        #calc-section {
             display: none;
-            margin-top: 20px;
             border-top: 1px solid #eee;
             padding-top: 20px;
         }
 
-        input[type="number"] {
+        input {
             width: 100%;
             padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
+            margin: 15px 0;
+            border: 1px solid #ccc;
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 16px;
-            outline-color: var(--primary-blue);
         }
 
         .submit-btn {
@@ -80,84 +72,71 @@
             background: #28a745;
             color: white;
             border: none;
-            padding: 15px;
+            padding: 14px;
             font-size: 18px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            margin-top: 10px;
         }
 
-        #result-box {
+        .result-box {
             display: none;
-            margin-top: 25px;
-            padding: 20px;
-            background: #f0f7ff;
-            border-radius: 10px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #e8f0fe;
+            border-radius: 8px;
             text-align: left;
         }
 
-        .line-item {
+        .res-line {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 8px;
-            color: #555;
+            margin: 8px 0;
             font-size: 15px;
+            color: #333;
         }
 
-        .net-payable {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px dashed #bcd;
-            font-size: 22px;
-            font-weight: 800;
+        .total-line {
+            border-top: 2px solid #1a73e8;
+            margin-top: 10px;
+            padding-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
             color: #000;
         }
 
         footer {
             margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #ccc;
-            width: 100%;
-            max-width: 600px;
-            text-align: center;
-            color: var(--primary-blue);
+            color: #0066ff;
             font-weight: bold;
             letter-spacing: 1px;
+            font-size: 14px;
             text-transform: uppercase;
         }
-
-        .highlight { font-weight: bold; color: #000; }
     </style>
 </head>
 <body>
 
-<div class="calc-card">
-    <h2>Loan Fee Calculator</h2>
-    <p>Select Loan Category:</p>
+<div class="container">
+    <h2>Loan Calculator</h2>
+    <p>Please select an option:</p>
     
     <div class="btn-group">
-        <button id="btnLow" class="mode-btn" onclick="setMode('low')">Up to 10 Lakhs</button>
-        <button id="btnHigh" class="mode-btn" onclick="setMode('high')">Above 10 Lakhs</button>
+        <button id="btnLow" class="option-btn" onclick="setMode('low')">Up to 10 Lakhs</button>
+        <button id="btnHigh" class="option-btn" onclick="setMode('high')">Above 10 Lakhs</button>
     </div>
 
-    <div id="input-section">
+    <div id="calc-section">
         <label id="input-label" style="font-weight: 600;"></label>
         <input type="number" id="loanAmount" placeholder="Enter Amount (e.g. 1000000)">
-        <button class="submit-btn" onclick="processCalculation()">Calculate Now</button>
-    </div>
-
-    <div id="result-box">
-        <div class="line-item"><span>0.50% Fee:</span> <span id="res1" class="highlight"></span></div>
-        <div class="line-item"><span>0.25% Fee:</span> <span id="res2" class="highlight"></span></div>
-        <div class="line-item"><span id="extraLabel">Extra %:</span> <span id="res3" class="highlight"></span></div>
-        <div class="line-item"><span>Fixed Charges:</span> <span class="highlight">₹500</span></div>
+        <button class="submit-btn" onclick="calculate()">Submit & Calculate</button>
         
-        <div class="net-payable">
-            <span>Net Payable:</span>
-            <span id="resTotal"></span>
+        <div id="result" class="result-box">
+            <div class="res-line"><span>0.50% Amount:</span> <span id="r1"></span></div>
+            <div class="res-line"><span>0.25% Amount:</span> <span id="r2"></span></div>
+            <div class="res-line"><span id="tax-label">Extra:</span> <span id="r3"></span></div>
+            <div class="res-line"><span>Fixed Charge:</span> <span>₹500</span></div>
+            <div class="res-line total-line"><span>Net Payable:</span> <span id="rTotal"></span></div>
         </div>
     </div>
 </div>
@@ -167,56 +146,57 @@
 </footer>
 
 <script>
-    let mode = '';
+    let currentMode = '';
 
-    function setMode(selectedMode) {
-        mode = selectedMode;
-        document.getElementById('input-section').style.display = 'block';
-        document.getElementById('result-box').style.display = 'none';
+    function setMode(mode) {
+        currentMode = mode;
+        document.getElementById('calc-section').style.display = 'block';
+        document.getElementById('result').style.display = 'none';
+        document.getElementById('loanAmount').value = '';
         
-        // Button UI Toggle
         document.getElementById('btnLow').classList.toggle('active', mode === 'low');
         document.getElementById('btnHigh').classList.toggle('active', mode === 'high');
         
-        // Label Update
         document.getElementById('input-label').innerText = 
-            mode === 'low' ? "Loan Amount (Up to ₹10,00,000):" : "Loan Amount (Above ₹10,00,000):";
+            mode === 'low' ? "Enter Amount (Up to 10L):" : "Enter Amount (Above 10L):";
     }
 
-    function processCalculation() {
+    function calculate() {
         const amount = parseFloat(document.getElementById('loanAmount').value);
-        
         if (!amount || amount <= 0) {
-            alert("Please enter a valid loan amount.");
+            alert("Please enter a valid amount");
             return;
         }
 
-        // Logic
-        let part1 = amount * 0.0050; // 0.50%
-        let part2 = amount * 0.0025; // 0.25%
-        let part3 = 0;
-        let fixed = 500;
+        // 1. Calculate 0.50% and Round Up if decimal exists
+        let p50 = Math.ceil(amount * 0.0050); 
+        
+        // 2. Calculate 0.25% and Round Up if decimal exists
+        let p25 = Math.ceil(amount * 0.0025); 
 
-        if (mode === 'low') {
-            part3 = part2 * 0.30; // 30% for Up to 10L
-            document.getElementById('extraLabel').innerText = "30% of 0.25%:";
+        // 3. Calculate Extra Percentage based on selection
+        let extra = 0;
+        if (currentMode === 'low') {
+            extra = p25 * 0.30; // 30% of 0.25% amount
+            document.getElementById('tax-label').innerText = "30% of 0.25%:";
         } else {
-            part3 = part2 * 0.33; // 33% for Above 10L
-            document.getElementById('extraLabel').innerText = "33% of 0.25%:";
+            extra = p25 * 0.33; // 33% of 0.25% amount
+            document.getElementById('tax-label').innerText = "33% of 0.25%:";
         }
 
-        let totalRaw = part1 + part2 + part3 + fixed;
-        
-        // Round Figure Logic (Agar point ke baad kuch bhi hai toh upar round karega)
-        let finalTotal = Math.ceil(totalRaw);
+        // Fixed Charge
+        const fixed = 500;
 
-        // UI Display
-        document.getElementById('res1').innerText = "₹" + part1.toLocaleString();
-        document.getElementById('res2').innerText = "₹" + part2.toLocaleString();
-        document.getElementById('res3').innerText = "₹" + part3.toLocaleString(undefined, {minimumFractionDigits: 2});
-        document.getElementById('resTotal').innerText = "₹" + finalTotal.toLocaleString();
+        // Total Net Payable
+        let total = p50 + p25 + extra + fixed;
+
+        // Final UI Display
+        document.getElementById('r1').innerText = "₹" + p50.toLocaleString();
+        document.getElementById('r2').innerText = "₹" + p25.toLocaleString();
+        document.getElementById('r3').innerText = "₹" + extra.toFixed(2).toLocaleString();
+        document.getElementById('rTotal').innerText = "₹" + total.toLocaleString();
         
-        document.getElementById('result-box').style.display = 'block';
+        document.getElementById('result').style.display = 'block';
     }
 </script>
 
